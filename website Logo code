@@ -1,0 +1,9 @@
+<head>
+  <title>Logo Example</title>
+</head>
+<body>
+    <div>
+        <img src="logo.png" alt="Company Logo">
+    </div>
+</body>
+</html>
