@@ -1,0 +1,233 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderly Care Center</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Elderly Care Center</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basket.html">Basket</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        <img src="logo.jpg" alt="Company Logo" id="logo">
+    </div>
+</header>
+
+<main>
+    <div class="carer-booking">
+        <h2>Book a Meeting with a Carer</h2>
+        <button onclick="showBookingPopup()">Book Now</button>
+    </div>
+
+    <div class="mini-store">
+        <h2>Medication for Elderly</h2>
+        <div id="medication-listings">
+            <!-- Medication listings will be dynamically added here -->
+            <div class="medication-item">
+                <h3>Aspirin</h3>
+                <p>Pain reliever and fever reducer</p>
+                <p>Price: £5.99 per bottle</p>
+                <button onclick="addToBasket('Aspirin', 5.99)">Add to Basket</button>
+            </div>
+            <div class="medication-item">
+                <h3>Blood Pressure Medication</h3>
+                <p>Controls high blood pressure</p>
+                <p>Price: £12.49 per pack</p>
+                <button onclick="addToBasket('Blood Pressure Medication', 12.49)">Add to Basket</button>
+            </div>
+            <div class="medication-item">
+                <h3>Calcium Supplements</h3>
+                <p>Strengthens bones and prevents osteoporosis</p>
+                <p>Price: £8.99 per bottle</p>
+                <button onclick="addToBasket('Calcium Supplements', 8.99)">Add to Basket</button>
+            </div>
+            <div class="medication-item">
+                <h3>Vitamin D Supplements</h3>
+                <p>Helps maintain bone health and immune system</p>
+                <p>Price: £6.99 per bottle</p>
+                <button onclick="addToBasket('Vitamin D Supplements', 6.99)">Add to Basket</button>
+            </div>
+            <div class="medication-item">
+                <h3>Eye Drops</h3>
+                <p>Relieves dry eyes and irritation</p>
+                <p>Price: £4.29 per bottle</p>
+                <button onclick="addToBasket('Eye Drops', 4.29)">Add to Basket</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="reminder">
+        <h2>Product Rebuy Reminder</h2>
+        <p>Don't forget to check your stock and reorder if needed!</p>
+    </div>
+
+    <div id="emailPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('emailPopup')">&times;</span>
+            <h3>Subscribe for Special Offers</h3>
+            <form onsubmit="submitEmail(); return false;">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Popup -->
+    <div id="bookingPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('bookingPopup')">&times;</span>
+            <h3>Book a Meeting with a Carer</h3>
+            <form onsubmit="submitBooking(); return false;">
+                <label for="name">Name:</label>
+                <input type="text" id="bookingName" name="name" required><br>
+                <label for="email">Email:</label>
+                <input type="email" id="bookingEmail" name="email" required><br>
+                <label for="time">Preferred Time:</label>
+                <input type="datetime-local" id="bookingTime" name="time" required><br>
+                <label for="carer">Select Carer:</label>
+                <select id="bookingCarer" name="carer" required>
+                    <option value="Karen Smith">Carer 1</option>
+                    <option value="John Kane">Carer 2</option>
+                    <option value="Sebastian Johnson">Carer 3</option>
+                    <option value="Lola Williams">Carer 4</option>
+                </select><br>
+                <button type="submit">Book</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="registrationPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('registrationPopup')">&times;</span>
+            <h3>Register</h3>
+            <form onsubmit="registerUser(); return false;">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="loginPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('loginPopup')">&times;</span>
+            <h3>Login</h3>
+            <form onsubmit="loginUser(); return false;">
+                <label for="loginUsername">Username:</label>
+                <input type="text" id="loginUsername" name="username" required><br>
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" name="password" required><br>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Elderly Care Center | <a href="index.html">Home</a> | <a href="basket.html">Basket</a> | <a href="contact.html">Contact</a></p>
+</footer>
+
+<script>
+    // Function to handle registration
+    function registerUser() {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        var formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+
+    // Send a POST request to a server-side script to handle registration
+        fetch('register.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Registration successful!');
+            } else {
+                alert('Registration failed. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Function to handle login
+    function loginUser() {
+        var loginUsername = document.getElementById('loginUsername').value;
+        var loginPassword = document.getElementById('loginPassword').value;
+
+        var formData = new FormData();
+        formData.append('username', loginUsername);
+        formData.append('password', loginPassword);
+
+        // Send a POST request to a server-side script to handle login
+        fetch('login.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Login successful!');
+                // Redirect to home page or perform other actions
+            } else {
+                alert('Login failed. Invalid username or password.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    // Function to show registration popup
+    function showRegistrationPopup() {
+        var registrationPopup = document.getElementById('registrationPopup');
+        registrationPopup.style.display = 'block';
+    }
+
+    // Function to show login popup
+    function showLoginPopup() {
+        var loginPopup = document.getElementById('loginPopup');
+        loginPopup.style.display = 'block';
+    }
+
+    // Function to close popups
+    function closePopup(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    function addToBasket(itemName, price) {
+        // Retrieve or initialize basket data from localStorage
+        let basket = JSON.parse(localStorage.getItem('basket')) || [];
+
+        // Add item to basket
+        basket.push({ name: itemName, price: price });
+
+        // Save updated basket data to localStorage
+        localStorage.setItem('basket', JSON.stringify(basket));
+
+        // Alert user that item has been added to basket (you can use a better UI for this)
+        alert('Item added to basket!');
+    }
+</script>
+
+</body>
+</html>
+
+    

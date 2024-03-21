@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basket</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Elderly Care Center</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basket.html">Basket</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <h2>Your Basket</h2>
+
+    <div id="basket-items">
+    </div>
+
+    <div id="total-price">
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Elderly Care Center | <a href="index.html">Home</a> | <a href="basket.html">Basket</a> | <a href="contact.html">Contact</a></p>
+</footer>
+
+<script>
+    function readCSV(file, callback) {
+        fetch(file)
+            .then(response => response.text())
+            .then(text => {
+                const data = text.split('\n').map(row => row.split(','));
+                callback(data);
+            });
+    }
+
+    function displayBasket() {
+        readCSV('basket.csv', function(data) {
+            data = data.filter(row => row.length > 1);
+
+            // Select the container where basket items will be displayed
+            const basketContainer = document.getElementById('basket-items');
+
+            // Clear any existing content in the basket container
+            basketContainer.innerHTML = '';
+
+            // Iterate through each item in the basket and create HTML elements to display them
+            data.forEach(row => {
+                const username = row[0];
+                const item = row[1];
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('basket-item');
+                itemElement.innerHTML = `
+                    <h3>${item}</h3>
+                    <p>Added by: ${username}</p>
+                `;
+                basketContainer.appendChild(itemElement);
+            });
+
+            // Calculate and display the total price of all items in the basket
+            const totalPrice = data.length; // Assuming each item has a price of 1
+            const totalPriceElement = document.getElementById('total-price');
+            totalPriceElement.innerHTML = `<p>Total items: ${totalPrice}</p>`;
+        });
+    }
+
+    // Call the displayBasket function when the page loads to show the basket items
+    window.onload = displayBasket;
+</script>
+
+</body>
+</html>
+
+
