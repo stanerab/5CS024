@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Authentication</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>User Authentication</h1>
+
+<div id="registrationForm">
+    <h2>Register</h2>
+    <form id="registerForm">
+        <label for="registerUsername">Username:</label>
+        <input type="text" id="registerUsername" required><br>
+        <label for="registerPassword">Password:</label>
+        <input type="password" id="registerPassword" required><br>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<div id="loginForm">
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="loginUsername">Username:</label>
+        <input type="text" id="loginUsername" required><br>
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" required><br>
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+    // Function to read from a CSV file
+    function readCSV(file, callback) {
+        fetch(file)
+            .then(response => response.text())
+            .then(text => {
+                const data = text.split('\n').map(row => row.split(','));
+                callback(data);
+            });
+    }
+
+    // Function to write to a CSV file
+    function writeCSV(file, data) {
+        const csvContent = data.map(row => row.join(',')).join('\n');
+        fetch(file, {
+            method: 'PUT',
+            body: csvContent
+        });
+    }
+
+    // Function to handle user registration
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('registerUsername').value;
+        const password = document.getElementById('registerPassword').value;
+
+        // Read the existing CSV data
+        readCSV('login.csv', function(existingData) {
+            // Check if username is already taken
+            if (existingData.some(row => row[0] === username)) {
+                alert('Username already taken. Please choose another one.');
+                return;
+            }
+
+            // Add the new user to the data
+            existingData.push([username, password]);
+
+            // Write the updated data back to the CSV file
+            writeCSV('login.csv', existingData);
+
+            alert('Registration successful! You can now log in.');
+            // Redirect to index.html after registration
+            window.location.href = "index.html";
+        });
+    });
+
+    // Function to handle user login
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
+
+        // Read the existing CSV data
+        readCSV('login.csv', function(existingData) {
+            // Check if the username and password match any user in the data
+            const user = existingData.find(row => row[0] === username && row[1] === password);
+            if (user) {
+                alert('Login successful!');
+                // Redirect to index.html after successful login
+                window.location.href = "index.html";
+            } else {
+                alert('Invalid username or password. Please try again.');
+                // Clear the login form
+                document.getElementById('loginForm').reset();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
