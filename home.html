@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elderly Care Center</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="basket.html">Basket</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        <img src="logo.jpg" alt="Company Logo" id="logo">
+    </div>
+</header>
+
+<main>
+    <div class="carer-booking">
+        <h2>Book a Meeting with a Carer</h2>
+        <button onclick="showBookingPopup()">Book Now</button>
+    </div>
+
+    <div class="mini-store">
+        <h2>Medication for Elderly</h2>
+        <div id="medication-listings">
+            <!-- Medication listings will be dynamically added here -->
+            <div class="medication-item">
+                <h3>Aspirin</h3>
+                <p>Pain reliever and fever reducer</p>
+                <p>Price: £5.99 per bottle</p>
+                <button onclick="addToBasket('Aspirin', 5.99)">Add to Basket</button>
+            </div>
+            <div class="medication-item">
+                <h3>Blood Pressure Medication</h3>
+                <p>Controls high blood pressure</p>
+                <p>Price: £12.49 per pack</p>
+                <button onclick="addToBasket('Blood Pressure Medication', 12.49)">Add to Basket</button>
+            </div>
+            <div class="medication-item">
+                <h3>Calcium Supplements</h3>
+                <p>Strengthens bones and prevents osteoporosis</p>
+                <p>Price: £8.99 per bottle</p>
+                <button onclick="addToBasket('Calcium Supplements', 8.99)">Add to Basket</button>
+            </div>
+            <div class="medication-item">
+                <h3>Vitamin D Supplements</h3>
+                <p>Helps maintain bone health and immune system</p>
+                <p>Price: £6.99 per bottle</p>
+                <button onclick="addToBasket('Vitamin D Supplements', 6.99)">Add to Basket</button>
+            </div>
+            <div class="medication-item">
+                <h3>Eye Drops</h3>
+                <p>Relieves dry eyes and irritation</p>
+                <p>Price: £4.29 per bottle</p>
+                <button onclick="addToBasket('Eye Drops', 4.29)">Add to Basket</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="reminder">
+        <h2>Product Rebuy Reminder</h2>
+        <p>Don't forget to check your stock and reorder if needed!</p>
+    </div>
+    <!-- Booking Popup -->
+    <div id="bookingPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('bookingPopup')">&times;</span>
+            <h3>Book a Meeting with a Carer</h3>
+            <form onsubmit="submitBooking(); return false;">
+                <label for="name">Name:</label>
+                <input type="text" id="bookingName" name="name" required><br>
+                <label for="email">Email:</label>
+                <input type="email" id="bookingEmail" name="email" required><br>
+                <label for="time">Preferred Time:</label>
+                <input type="datetime-local" id="bookingTime" name="time" required><br>
+                <label for="carer">Select Carer:</label>
+                <select id="bookingCarer" name="carer" required>
+                    <option value="Karen Smith">Carer 1</option>
+                    <option value="John Kane">Carer 2</option>
+                    <option value="Sebastian Johnson">Carer 3</option>
+                    <option value="Lola Williams">Carer 4</option>
+                </select><br>
+                <button type="submit">Book</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2024 Elderly Care Center | <a href="index.html">Home</a> | <a href="basket.html">Basket</a> | <a href="contact.html">Contact</a></p>
+</footer>
+</body>
+</html>
